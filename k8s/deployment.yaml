@@ -6,7 +6,7 @@ spec:
   replicas: 2
   selector: 
     matchLabels:
-      app: app-javb
+      app: app-java
   template:
     metadata:
       labels:
