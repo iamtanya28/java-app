@@ -8,13 +8,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/iamtanya28/java-app.git'
+                sh 'echo passed'
+              //  git branch: 'main', url: 'https://github.com/iamtanya28/java-app.git'
             }
         }
 
         stage('Build with Maven') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                sh 'mvn clean package'
             }
         }
 
