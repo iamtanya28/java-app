@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'docker:24.0.0'  // Docker-in-Docker image
+            image 'maven:3.9.4-eclipse-temurin-17'
             args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socket to the container
         }
     }
@@ -22,6 +22,20 @@ pipeline {
             steps {
                 echo '⚙️ Building with Maven'
                 sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Install Docker') {
+            steps {
+                echo '🔧 Installing Docker'
+                sh '''
+                    apt-get update
+                    apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+                    curl -fsSL https://download.docker.com/linux/debian/gpg | tee /etc/apt/trusted.gpg.d/docker.asc
+                    echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list
+                    apt-get update
+                    apt-get install -y docker-ce docker-ce-cli containerd.io
+                '''
             }
         }
 
