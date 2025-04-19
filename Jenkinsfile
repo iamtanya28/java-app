@@ -14,9 +14,6 @@ pipeline {
         }
 
         stage('Build with Maven') {
-            agent {
-                docker 'maven:3.8.6-openjdk-11'  // Use a Maven image with OpenJDK
-            }
             steps {
                 sh 'mvn clean package -DskipTests'
             }
