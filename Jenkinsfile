@@ -20,23 +20,21 @@ pipeline {
                 sh 'mvn clean package -DskipTests'
             }
         }
-
-        stage('Build & push Docker Image') {
+stage('Build & Push Docker Image') {
             environment {
-        DOCKER_IMAGE = 'iamtanya28/java-app'
-        REGISTRY_CREDENTIALS = credentials('docker-cred')
-
-    }
+                REGISTRY_CREDENTIALS = credentials('docker-cred') // replace with your ID
+            }
             steps {
-    script{
-                sh "docker build -t $DOCKER_IMAGE ."
-        def dockerImage = docker.image("${DOCKER_IMAGE}")
-            docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
-                dockerImage.push()
+                script {
+                    echo '🐳 Building Docker Image'
+                    sh """
+                        docker --version  # Check Docker version to verify it's available
+                        docker build -t $DOCKER_IMAGE .
+                        echo "$REGISTRY_CREDENTIALS_PSW" | docker login -u "$REGISTRY_CREDENTIALS_USR" --password-stdin
+                        docker push $DOCKER_IMAGE
+                    """
+                }
             }
-
-            }
-        }
         }
     }
 
