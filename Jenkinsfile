@@ -1,14 +1,14 @@
 pipeline {
     agent {
         docker {
-            image 'maven:3.8.7-eclipse-temurin-17' // has Maven + JDK
+            image 'iamtanya28/java-app:latest'
             args '-v /var/run/docker.sock:/var/run/docker.sock' // allows Docker commands from inside container
         }
     }
 
-    environment {
-        DOCKER_IMAGE = 'iamtanya28/java-app'
-    }
+    // environment {
+    //     DOCKER_IMAGE = 'iamtanya28/java-app'
+    // }
 
     stages {
         stage('Checkout') {
