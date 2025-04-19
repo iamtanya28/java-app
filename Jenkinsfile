@@ -6,10 +6,7 @@ pipeline {
         }
     }
 
-    environment {
-        DOCKER_IMAGE = 'iamtanya28/java-app'
-    }
-
+    
     stages {
         stage('Checkout') {
             steps {
@@ -24,19 +21,22 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build & push Docker Image') {
+            environment {
+        DOCKER_IMAGE = 'iamtanya28/java-app'
+        REGISTRY_CREDENTIALS = credentials('docker-cred')
+
+    }
             steps {
+    script{
                 sh "docker build -t $DOCKER_IMAGE ."
+        def dockerImage = docker.image("${DOCKER_IMAGE}")
+            docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
+                dockerImage.push()
+            }
+
             }
         }
-
-        stage('Push Docker Image') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                    sh "docker push $DOCKER_IMAGE"
-                }
-            }
         }
     }
 
