@@ -5,7 +5,9 @@ pipeline {
              args '-v /var/run/docker.sock:/var/run/docker.sock'  
         }
     }
-
+environment {
+        DOCKER_IMAGE = 'iamtanya28/java-app'  // Define the Docker image variable here
+    }
     
     stages {
         stage('Checkout') {
