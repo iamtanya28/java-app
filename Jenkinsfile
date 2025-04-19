@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'maven:3.9.4-eclipse-temurin-17'
+            image 'docker:24.0.0'  // Docker-in-Docker image
             args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socket to the container
         }
     }
@@ -27,7 +27,6 @@ pipeline {
 
         stage('Build & Push Docker Image') {
             environment {
-                // Securely use the Jenkins credentials
                 REGISTRY_CREDENTIALS = credentials('docker-cred')  // Replace with your Jenkins credentials ID
             }
             steps {
