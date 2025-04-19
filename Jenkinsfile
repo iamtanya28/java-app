@@ -8,8 +8,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                sh 'echo passed'
-              //  git branch: 'main', url: 'https://github.com/iamtanya28/java-app.git'
+                sh "echo passed"
+                //git branch: 'main', url: 'https://github.com/yourusername/java-devops-app.git'
             }
         }
 
@@ -37,11 +37,10 @@ pipeline {
 
     post {
         success {
-            echo '✅ Pipeline completed successfully!!'
+            echo '✅ Pipeline completed successfully!'
         }
         failure {
-            echo '❌ Pipeline failed!!'
+            echo '❌ Pipeline failed!'
         }
     }
 }
-
